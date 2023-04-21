@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import classNames from "classnames";
 
 const LOGO_URL =
   "https://igamingidol.com/wp-content/uploads/2022/03/Yolo-Logo-Black-.png";
@@ -12,6 +13,7 @@ export default function Home() {
   const [score, setScore] = useState("");
   const [password, setPassword] = useState("");
   const [entries, setEntries] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchScores = useCallback(async () => {
     try {
@@ -34,11 +36,15 @@ export default function Home() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (loading) {
+      return;
+    }
     if (password !== PASSWORD) {
       alert("Wrong password");
       return;
     }
     try {
+      setLoading(true);
       const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -58,6 +64,7 @@ export default function Home() {
       setEmail("");
       setScore("");
       setPassword("");
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +72,7 @@ export default function Home() {
 
   const sortedEntries = entries
     .sort((a: any, b: any) => b.score - a.score)
-    .slice(0, 5);
+    .slice(0, 3);
 
   return (
     <div className="flex flex-col justify-center min-h-screen py-6 bg-gray-100 sm:py-12">
@@ -114,12 +121,12 @@ export default function Home() {
                 className="block w-full p-2 mt-1 text-black border border-gray-300 rounded-md bg-gray-50"
               />
               {/* password field */}
-              <div>
+              <div className="mt-1">
                 <label
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Password
+                  API KEY
                 </label>
                 <input
                   type="password"
@@ -133,13 +140,18 @@ export default function Home() {
             </div>
             <button
               type="submit"
-              className="w-full px-4 py-2 font-bold text-white rounded bg-gradient-to-r from-blue-400 to-indigo-600 hover:from-blue-500 hover:to-indigo-700"
+              className={classNames(
+                "w-full px-4 py-2 font-bold text-white rounded bg-gradient-to-r from-blue-400 to-indigo-600 hover:from-blue-500 hover:to-indigo-700",
+                {
+                  "cursor-not-allowed opacity-50": loading,
+                }
+              )}
             >
               Submit
             </button>
           </form>
           <div className="mt-8">
-            <h2 className="text-lg font-semibold">Top 5 Emails</h2>
+            <h2 className="text-lg font-semibold">Top 3</h2>
             <table className="min-w-full mt-4 divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
