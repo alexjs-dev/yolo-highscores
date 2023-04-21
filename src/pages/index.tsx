@@ -32,7 +32,7 @@ export default function Home() {
     fetchScores();
   }, [fetchScores]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (password !== PASSWORD) {
       alert("Wrong password");
@@ -56,14 +56,16 @@ export default function Home() {
     } catch (error) {
       console.error(error);
     }
-
+    // @ts-ignore
     setEntries([...entries, { email, score }]);
     setEmail("");
     setScore("");
     setPassword("");
   };
 
-  const sortedEntries = entries.sort((a, b) => b.score - a.score).slice(0, 5);
+  const sortedEntries = entries
+    .sort((a: any, b: any) => b.score - a.score)
+    .slice(0, 5);
 
   return (
     <div className="flex flex-col justify-center min-h-screen py-6 bg-gray-100 sm:py-12">
@@ -159,16 +161,20 @@ export default function Home() {
                 {sortedEntries.map((entry, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {/* hide some parts of the email */}
+                      {/* @ts-ignore */}
                       <div className="text-sm text-gray-900">{`${entry.email.slice(
                         0,
                         3
+                        /* @ts-ignore */
                       )}...${entry.email.slice(
+                        /* @ts-ignore */
                         entry.email.indexOf("@"),
+                        /* @ts-ignore */
                         entry.email.length
                       )}`}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
+                      {/* @ts-ignore */}
                       <div className="text-sm text-gray-900">{entry.score}</div>
                     </td>
                   </tr>
