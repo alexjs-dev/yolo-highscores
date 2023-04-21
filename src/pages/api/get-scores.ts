@@ -6,6 +6,7 @@ const MONGODB_URI =
 
 async function connectToDatabase() {
   const client = await MongoClient.connect(MONGODB_URI, {
+    // @ts-ignore
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
