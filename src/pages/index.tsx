@@ -72,6 +72,11 @@ export default function Home() {
 
   const sortedEntries = entries
     .sort((a: any, b: any) => b.score - a.score)
+    // filter out duplicate entries (same email) and only keep the highest score
+    .filter(
+      (entry: any, index: number, self: any) =>
+        index === self.findIndex((t: any) => t.email === entry.email)
+    )
     .slice(0, 3);
 
   return (
