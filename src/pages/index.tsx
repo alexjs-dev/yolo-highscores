@@ -51,16 +51,16 @@ export default function Home() {
         throw new Error("Error saving data");
       }
 
-      const data = await response.json();
-      console.log(data.message);
+      await response.json();
+
+      // @ts-ignore
+      setEntries([...entries, { email, score }]);
+      setEmail("");
+      setScore("");
+      setPassword("");
     } catch (error) {
       console.error(error);
     }
-    // @ts-ignore
-    setEntries([...entries, { email, score }]);
-    setEmail("");
-    setScore("");
-    setPassword("");
   };
 
   const sortedEntries = entries
