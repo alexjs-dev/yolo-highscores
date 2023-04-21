@@ -14,6 +14,7 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isEmailsHidden, setIsEmailsHidden] = useState(true);
 
   const fetchScores = useCallback(async () => {
     try {
@@ -174,21 +175,32 @@ export default function Home() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody
+                className="transition-all bg-white divide-y divide-gray-200 hover:opacity-50"
+                onClick={() => {
+                  setIsEmailsHidden(!isEmailsHidden);
+                }}
+              >
                 {sortedEntries.map((entry, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {/* @ts-ignore */}
-                      <div className="text-sm text-gray-900">{`${entry.email.slice(
-                        0,
-                        3
-                        /* @ts-ignore */
-                      )}...${entry.email.slice(
-                        /* @ts-ignore */
-                        entry.email.indexOf("@"),
-                        /* @ts-ignore */
-                        entry.email.length
-                      )}`}</div>
+                      <div className="text-sm text-gray-900">
+                        {isEmailsHidden
+                          ? /* @ts-ignore */
+                            `${entry.email.slice(
+                              0,
+                              3
+                              /* @ts-ignore */
+                            )}...${entry.email.slice(
+                              /* @ts-ignore */
+                              entry.email.indexOf("@"),
+                              /* @ts-ignore */
+                              entry.email.length
+                            )}`
+                          : /* @ts-ignore */
+                            entry.email}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {/* @ts-ignore */}
